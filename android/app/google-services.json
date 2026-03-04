@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1057117435840",
+    "project_id": "intership-db0d0",
+    "storage_bucket": "intership-db0d0.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1057117435840:android:c63092800a06b47f34ba25",
+        "android_client_info": {
+          "package_name": "com.example.task"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBLWnGYPHvQG3P3yIJGUBO56Cf7YoAK4_c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
