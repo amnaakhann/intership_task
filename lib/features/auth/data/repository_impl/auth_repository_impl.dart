@@ -15,13 +15,31 @@ class AuthRepositoryImpl implements AuthRepository {
   User? get currentUser => remote.currentUser;
 
   @override
-  Future<UserCredential> signIn(String email, String password) {
-    return remote.signIn(email, password);
+  Future<UserCredential> signIn(String email, String password) async {
+    try {
+      // ignore: avoid_print
+      print('[AuthRepository] signIn for $email');
+      final res = await remote.signIn(email, password);
+      return res;
+    } catch (e) {
+      // ignore: avoid_print
+      print('[AuthRepository] signIn error: $e');
+      rethrow;
+    }
   }
 
   @override
-  Future<UserCredential> signUp(String email, String password) {
-    return remote.signUp(email, password);
+  Future<UserCredential> signUp(String email, String password) async {
+    try {
+      // ignore: avoid_print
+      print('[AuthRepository] signUp for $email');
+      final res = await remote.signUp(email, password);
+      return res;
+    } catch (e) {
+      // ignore: avoid_print
+      print('[AuthRepository] signUp error: $e');
+      rethrow;
+    }
   }
 
   @override
@@ -31,14 +49,18 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<void> saveUser(UserEntity user) async {
-    // convert UserEntity to UserModel if necessary
     try {
-      final userModel = (user is dynamic && (user as dynamic).toMap != null)
-          ? user
-          : user;
-      // If remote has a saveUser which accepts UserModel, we attempt to call it.
-      await remote.saveUser(user as dynamic);
+      // ignore: avoid_print
+      print('[AuthRepository] saveUser ${user.uid}');
+      if (user is dynamic && (user as dynamic).toMap != null) {
+        await remote.saveUser(user as dynamic);
+      } else {
+        // ignore: avoid_print
+        print('[AuthRepository] saveUser: cannot convert user to save');
+      }
     } catch (e) {
+      // ignore: avoid_print
+      print('[AuthRepository] saveUser error: $e');
       rethrow;
     }
   }

@@ -12,15 +12,43 @@ class AuthRemoteDataSource {
   Stream<User?> get authStateChanges => authService.authStateChanges;
   User? get currentUser => authService.currentUser;
 
-  Future<UserCredential> signIn(String email, String password) {
-    return authService.signInWithEmailAndPassword(email, password);
+  Future<UserCredential> signIn(String email, String password) async {
+    try {
+      // ignore: avoid_print
+      print('[AuthRemoteDataSource] signIn for $email');
+      final credential = await authService.signInWithEmailAndPassword(email, password);
+      return credential;
+    } catch (e) {
+      // ignore: avoid_print
+      print('[AuthRemoteDataSource] signIn error: $e');
+      rethrow;
+    }
   }
 
-  Future<UserCredential> signUp(String email, String password) {
-    return authService.signUpWithEmailAndPassword(email, password);
+  Future<UserCredential> signUp(String email, String password) async {
+    try {
+      // ignore: avoid_print
+      print('[AuthRemoteDataSource] signUp for $email');
+      final credential = await authService.signUpWithEmailAndPassword(email, password);
+      return credential;
+    } catch (e) {
+      // ignore: avoid_print
+      print('[AuthRemoteDataSource] signUp error: $e');
+      rethrow;
+    }
   }
 
   Future<void> saveUser(UserModel user) async {
-    await firestoreService.setDocument('users', user.uid, user.toMap());
+    try {
+      // ignore: avoid_print
+      print('[AuthRemoteDataSource] saveUser ${user.uid}');
+      await firestoreService.setDocument('users', user.uid, user.toMap());
+      // ignore: avoid_print
+      print('[AuthRemoteDataSource] saveUser complete for ${user.uid}');
+    } catch (e) {
+      // ignore: avoid_print
+      print('[AuthRemoteDataSource] saveUser error: $e');
+      rethrow;
+    }
   }
 }
