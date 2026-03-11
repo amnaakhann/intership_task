@@ -7,12 +7,17 @@ import 'package:task/core/router/app_router.dart';
 import 'features/home/presentation/screens/home_screen.dart';
 import 'features/auth/presentation/providers/auth_provider.dart';
 import 'features/auth/presentation/screens/login_screen.dart';
+import 'app/injection_container.dart' as di;
+import 'features/auth/domain/repository/auth_repository.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  await di.init();
+
   runApp(const MyApp());
 }
 
@@ -23,7 +28,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => AuthProvider()),
+        ChangeNotifierProvider<AuthProvider>(
+          create: (_) => AuthProvider(di.sl<AuthRepository>()),
+        ),
       ],
       child: Consumer<AuthProvider>(
         builder: (context, authProvider, child) {
@@ -32,7 +39,7 @@ class MyApp extends StatelessWidget {
             title: 'Task App',
             theme: AppTheme.lightTheme,
             onGenerateRoute: AppRouter.generateRoute,
-            home: authProvider.isAuthenticated
+            home: (authProvider != null && authProvider.isAuthenticated)
                 ? const HomeScreen()
                 : const LoginScreen(),
           );

@@ -1,16 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:task/core/providers/base_provider.dart';
-import 'package:task/core/services/auth_service.dart';
-import 'package:task/core/services/firestore_service.dart';
 import '../../data/models/user_model.dart';
+import '../../domain/repository/auth_repository.dart';
 
 class AuthProvider extends BaseProvider {
-  final AuthService _authService = AuthService();
-  final FirestoreService _firestoreService = FirestoreService();
+  final AuthRepository _authRepository;
   User? _user;
 
-  AuthProvider() {
-    _authService.authStateChanges.listen((User? user) {
+  AuthProvider(this._authRepository) {
+    _authRepository.authStateChanges.listen((User? user) {
       _user = user;
       notifyListeners();
     });
@@ -24,7 +22,7 @@ class AuthProvider extends BaseProvider {
     setLoading(true);
     setError(null);
     try {
-      await _authService.signInWithEmailAndPassword(email, password);
+      await _authRepository.signIn(email, password);
       setLoading(false);
       return true;
     } catch (e) {
@@ -45,7 +43,7 @@ class AuthProvider extends BaseProvider {
     setLoading(true);
     setError(null);
     try {
-      final userCredential = await _authService.signUpWithEmailAndPassword(email, password);
+      final userCredential = await _authRepository.signUp(email, password);
       final user = userCredential.user;
 
       if (user != null) {
@@ -57,7 +55,10 @@ class AuthProvider extends BaseProvider {
           age: age,
         );
 
-        await _firestoreService.setDocument('users', user.uid, userModel.toMap());
+        // Save user via repository (typed)
+        try {
+          await _authRepository.saveUser(userModel);
+        } catch (_) {}
       }
 
       setLoading(false);
@@ -71,6 +72,6 @@ class AuthProvider extends BaseProvider {
 
   // Sign Out
   Future<void> logout() async {
-    await _authService.signOut();
+    await _authRepository.signOut();
   }
 }
