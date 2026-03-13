@@ -3,6 +3,8 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:provider/provider.dart';
 import 'package:task/core/theme/app_colors.dart';
 import 'package:task/core/theme/app_text_styles.dart';
+import 'package:task/core/extensions/context_extensions.dart';
+import 'package:task/core/providers/responsive_provider.dart' as resp;
 import 'package:task/features/home/domain/entities/carousel_item.dart';
 import 'package:task/features/home/domain/entities/quick_card_entity.dart';
 import 'package:task/features/auth/presentation/providers/auth_provider.dart';
@@ -25,19 +27,19 @@ class _HomeMobileState extends State<HomeMobile> {
   bool _isSearching = false;
 
   final List<CarouselItem> _carouselItems = const [
-    CarouselItem(
+    _CarouselItemData(
       gradient: [Color(0xFF6C63FF), Color(0xFF3B82F6)],
       title: 'Discover Recipes',
       subtitle: 'Find your perfect meal today',
       icon: Icons.restaurant_menu_rounded,
     ),
-    CarouselItem(
+    _CarouselItemData(
       gradient: [Color(0xFFFF6584), Color(0xFFFF8C61)],
       title: 'Cook with Passion',
       subtitle: 'Step-by-step cooking guides',
       icon: Icons.local_fire_department_rounded,
     ),
-    CarouselItem(
+    _CarouselItemData(
       gradient: [Color(0xFF43E97B), Color(0xFF38F9D7)],
       title: 'Eat Healthy',
       subtitle: 'Nutritious meals for every day',
@@ -74,6 +76,8 @@ class _HomeMobileState extends State<HomeMobile> {
 
   @override
   Widget build(BuildContext context) {
+    final res = context.watch<resp.ResponsiveProvider>();
+
     return Scaffold(
       backgroundColor: AppColors.background,
       body: SafeArea(
@@ -93,6 +97,7 @@ class _HomeMobileState extends State<HomeMobile> {
               },
               onSearchSubmitted: (value) {
                 setState(() {
+                  // ignore: use_build_context_synchronously
                   _isSearching = false;
                 });
               },
@@ -103,7 +108,7 @@ class _HomeMobileState extends State<HomeMobile> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const SizedBox(height: 12),
+                    res.vSpace(res.smallSpace),
                     HomeCarousel(
                       items: _carouselItems,
                       currentIndex: _currentCarouselIndex,
@@ -111,11 +116,11 @@ class _HomeMobileState extends State<HomeMobile> {
                       onPageChanged: (index, reason) =>
                           setState(() => _currentCarouselIndex = index),
                     ),
-                    const SizedBox(height: 32),
-                    _buildSectionTitle('Popular This Week'),
-                    const SizedBox(height: 12),
-                    _buildQuickCardsList(),
-                    const SizedBox(height: 40),
+                    res.vSpace(res.smallSpace),
+                    _buildSectionTitle('Popular This Week', res),
+                    res.vSpace(0.015),
+                    _buildQuickCardsList(res),
+                    res.vSpace(res.largeSpace),
                   ],
                 ),
               ),
@@ -126,9 +131,9 @@ class _HomeMobileState extends State<HomeMobile> {
     );
   }
 
-  Widget _buildSectionTitle(String title) {
+  Widget _buildSectionTitle(String title, resp.ResponsiveProvider res) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24),
+      padding: EdgeInsets.symmetric(horizontal: res.sw(0.06)),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -145,9 +150,9 @@ class _HomeMobileState extends State<HomeMobile> {
     );
   }
 
-  Widget _buildQuickCardsList() {
+  Widget _buildQuickCardsList(resp.ResponsiveProvider res) {
     return SizedBox(
-      height: 130,
+      height: res.sh(0.16),
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -157,4 +162,22 @@ class _HomeMobileState extends State<HomeMobile> {
       ),
     );
   }
+}
+
+class _CarouselItemData implements CarouselItem {
+  @override
+  final List<Color> gradient;
+  @override
+  final String title;
+  @override
+  final String subtitle;
+  @override
+  final IconData icon;
+
+  const _CarouselItemData({
+    required this.gradient,
+    required this.title,
+    required this.subtitle,
+    required this.icon,
+  });
 }
