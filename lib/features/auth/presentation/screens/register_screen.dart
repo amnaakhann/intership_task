@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:go_router/go_router.dart';
 import '../../../../core/router/app_router.dart';
 import '../providers/auth_provider.dart';
 import '../widgets/auth_text_field.dart';
@@ -51,7 +52,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
       );
 
       if (success && mounted) {
-        Navigator.pushReplacementNamed(context, AppRoutes.home);
+        // ignore: use_build_context_synchronously
+        context.go(AppRoutes.home);
       } else if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(authProvider.error ?? 'Registration failed')),

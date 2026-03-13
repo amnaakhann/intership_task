@@ -23,12 +23,11 @@ class ToHerFocus extends StatelessWidget {
       child: Consumer<AuthProvider>(
         builder: (context, authProvider, child) {
           final isAuthenticated = authProvider.isAuthenticated;
-          return MaterialApp(
+          return MaterialApp.router(
             debugShowCheckedModeBanner: false,
             title: 'Task App',
             theme: AppTheme.lightTheme,
-            onGenerateRoute: AppRouter.generateRoute,
-            home: isAuthenticated ? const HomeScreen() : const LoginScreen(),
+            routerConfig: AppRouter.router,
           );
         },
       ),

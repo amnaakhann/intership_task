@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:task/features/home/presentation/screens/home_screen.dart';
 import 'package:task/features/auth/presentation/screens/login_screen.dart';
 import 'package:task/features/auth/presentation/screens/register_screen.dart';
@@ -20,24 +21,30 @@ class AppRoutes {
 
 /// Application route generator
 class AppRouter {
-  static Route<dynamic> generateRoute(RouteSettings settings) {
-    switch (settings.name) {
-      case AppRoutes.home:
-        return MaterialPageRoute(builder: (_) => const HomeScreen());
-      case AppRoutes.login:
-        return MaterialPageRoute(builder: (_) => const LoginScreen());
-      case AppRoutes.register:
-        return MaterialPageRoute(builder: (_) => const RegisterScreen());
-      default:
-        // Handle sub-routes like /login/register if used
-        if (settings.name == '${AppRoutes.login}/register') {
-           return MaterialPageRoute(builder: (_) => const RegisterScreen());
-        }
-        return MaterialPageRoute(
-          builder: (_) => const Scaffold(
-            body: Center(child: Text('404 - Page not found')),
+  static final GoRouter router = GoRouter(
+    initialLocation: AppRoutes.login,
+    routes: <GoRoute>[
+      GoRoute(
+        path: AppRoutes.login,
+        builder: (context, state) => const LoginScreen(),
+        routes: [
+          GoRoute(
+            path: 'register',
+            builder: (context, state) => const RegisterScreen(),
           ),
-        );
-    }
-  }
+        ],
+      ),
+      GoRoute(
+        path: AppRoutes.register,
+        builder: (context, state) => const RegisterScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.home,
+        builder: (context, state) => const HomeScreen(),
+      ),
+    ],
+    errorBuilder: (context, state) => const Scaffold(
+      body: Center(child: Text('404 - Page not found')),
+    ),
+  );
 }
