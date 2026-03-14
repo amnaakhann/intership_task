@@ -60,7 +60,7 @@ class HomeCarousel extends StatelessWidget {
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: item.gradient.first.withOpacity(0.4),
+            color: item.gradient.first.withValues(alpha: 0.4),
             blurRadius: 20,
             offset: const Offset(0, 8),
           ),
@@ -76,7 +76,7 @@ class HomeCarousel extends StatelessWidget {
               height: 160,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: Colors.white.withOpacity(0.08),
+                color: Colors.white.withValues(alpha: 0.08),
               ),
             ),
           ),
@@ -88,7 +88,7 @@ class HomeCarousel extends StatelessWidget {
               height: 100,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: Colors.white.withOpacity(0.06),
+                color: Colors.white.withValues(alpha: 0.06),
               ),
             ),
           ),
@@ -101,7 +101,7 @@ class HomeCarousel extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.25),
+                    color: Colors.white.withValues(alpha: 0.25),
                     borderRadius: BorderRadius.circular(14),
                   ),
                   child: Icon(item.icon, color: Colors.white, size: 28),
@@ -120,7 +120,7 @@ class HomeCarousel extends StatelessWidget {
                 Text(
                   item.subtitle,
                   style: TextStyle(
-                    color: Colors.white.withOpacity(0.85),
+                    color: Colors.white.withValues(alpha: 0.85),
                     fontSize: 13,
                     fontWeight: FontWeight.w400,
                   ),
@@ -134,9 +134,9 @@ class HomeCarousel extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.25),
+                color: Colors.white.withValues(alpha: 0.25),
                 borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: Colors.white.withOpacity(0.4)),
+                border: Border.all(color: Colors.white.withValues(alpha: 0.4)),
               ),
               child: const Row(
                 mainAxisSize: MainAxisSize.min,
@@ -167,7 +167,7 @@ class HomeCarousel extends StatelessWidget {
       count: items.length,
       effect: ExpandingDotsEffect(
         activeDotColor: AppColors.primary,
-        dotColor: AppColors.primary.withOpacity(0.25),
+        dotColor: AppColors.primary.withValues(alpha: 0.25),
         dotHeight: 8,
         dotWidth: 8,
         expansionFactor: 3,

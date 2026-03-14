@@ -1,4 +1,4 @@
-/// Utility functions
+// Utility functions
 
 extension StringExtensions on String {
   bool get isValidEmail {

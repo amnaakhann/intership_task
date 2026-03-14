@@ -3,7 +3,6 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:provider/provider.dart';
 import 'package:task/core/theme/app_colors.dart';
 import 'package:task/core/theme/app_text_styles.dart';
-import 'package:task/core/extensions/context_extensions.dart';
 import 'package:task/core/providers/responsive_provider.dart' as resp;
 import 'package:task/features/home/domain/entities/carousel_item.dart';
 import 'package:task/features/home/domain/entities/quick_card_entity.dart';

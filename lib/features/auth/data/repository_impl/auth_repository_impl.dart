@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import '../../domain/repository/auth_repository.dart';
 import '../datasources/auth_remote_data_source.dart';
+import '../models/user_model.dart';
 import '../../domain/entities/user_entity.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
@@ -52,12 +53,7 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       // ignore: avoid_print
       print('[AuthRepository] saveUser ${user.uid}');
-      if (user is dynamic && (user as dynamic).toMap != null) {
-        await remote.saveUser(user as dynamic);
-      } else {
-        // ignore: avoid_print
-        print('[AuthRepository] saveUser: cannot convert user to save');
-      }
+      await remote.saveUser(user as UserModel);
     } catch (e) {
       // ignore: avoid_print
       print('[AuthRepository] saveUser error: $e');
